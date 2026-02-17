@@ -1,2 +1,2 @@
 # ci-pipeline-demo
-CI practise
+Trigger CI after adding secrets
