@@ -30,9 +30,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set image tag based on branch
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "TAG=prod-${{ github.sha }}" >> $GITHUB_ENV
+          else
+            echo "TAG=dev-${{ github.sha }}" >> $GITHUB_ENV
+          fi
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: davidkreiter/ci-pipeline-demo:${{ github.sha }}
+          tags: davidkreiter/ci-pipeline-demo:${{ env.TAG }}
